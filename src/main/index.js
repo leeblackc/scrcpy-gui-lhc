@@ -21,7 +21,7 @@ function createWindow() {
    */
 	mainWindow = new BrowserWindow({
 		height: 800,
-		width: 513,
+		width: 600,
 		frame: false,
 		title: 'Scrcpy',
 		fullscreenable: false,
@@ -46,6 +46,7 @@ function createWindow() {
 		ipcMain.removeAllListeners('open')
 		ipcMain.removeAllListeners('connect')
 		ipcMain.removeAllListeners('disconnect')
+		ipcMain.removeAllListeners('installApp')
 	})
 
 	mainWindow.on('closed', () => {
@@ -57,6 +58,7 @@ function createWindow() {
 		ipcMain.on('open', scrcpy.open)
 		ipcMain.on('connect', adb.connect)
 		ipcMain.on('disconnect', adb.disconnect)
+		ipcMain.on('installApp', adb.installApp)
 
 	})
 }

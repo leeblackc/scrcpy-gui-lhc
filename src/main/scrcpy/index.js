@@ -89,6 +89,7 @@ const open = ({ sender }, options) => {
 
 		const { spawn } = require('child_process')
 		const scrcpy = spawn('scrcpy', [...args, '-s', `${id}`])
+		sender.send('activeDeviceId', {'deviceId': id, 'processId': scrcpy.pid})
 		let opened = false
 		let exited = false
 		scrcpy.stdout.on('data', (data) => {
@@ -100,6 +101,7 @@ const open = ({ sender }, options) => {
 		})
 		scrcpy.on('error', (code) => {
 			console.log(`child process close all stdio with code ${code}`)
+			sender.send('offlineDeviceId', {'deviceId': id, 'processId': scrcpy.pid})
 			scrcpy.kill()
 		})
 
@@ -111,6 +113,7 @@ const open = ({ sender }, options) => {
 			console.log(`child process exited with code ${code}`)
 			if (!exited) {
 				sender.send('close', { success: code === 0, id })
+				sender.send('offlineDeviceId', {'deviceId': id, 'processId': scrcpy.pid})
 				scrcpy.kill()
 				exited = true
 			}

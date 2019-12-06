@@ -82,10 +82,33 @@
 				</el-table-column>
 			</el-table>
 			<div class="wrap-button">
-				<el-button type="primary" @click.native.prevent="open" :disabled="selectedDevices.length === 0" plain v-waves>
-					{{ $t('management.button.open') }}
-				</el-button>
+				<el-col :span="24">
+					<el-button type="primary" style="width: 100%;" @click.native.prevent="open" :disabled="selectedDevices.length === 0" plain v-waves>
+						{{ $t('management.button.open') }}
+					</el-button>
+				</el-col>
 			</div>
+			<br>
+			<br>
+			<div class="wrap-button">
+				<el-col :span="20">
+					<el-input v-model="appLocation" placeholder="请输入apk路径" clearable>
+						<el-button slot="append" @click='openFileDialog'>选择文件</el-button>
+					</el-input>
+					<input type="file" name="filename" id="open" style="display:none" accept=".apk"
+						   @change="showFilePath"/>
+				</el-col>
+				<el-col :span="1">
+					&nbsp;
+				</el-col>
+				<el-col :span="3">
+					<el-button type="success" style="width: 100%;" @click.native.prevent="installApp" :disabled="(Object.keys(activeDeviceIds).length === 0 || appLocation ==='' )"
+							   plain v-waves>安装
+					</el-button>
+				</el-col>
+			</div>
+			<br>
+			<br>
 		</div>
 		<div class="when-empty" v-else>
 			<span> {{ $t('management.whenEmpty') }} </span>
@@ -104,6 +127,9 @@
 				editModeEnabled: true,
 				currentDevices: [],
 				selectedDevices: [],
+				activeDevices: {},
+				activeDeviceIds: {},
+				appLocation: '',
 				ip: '192.168.0.',
 				wirelessDevices: [],
 				deletedEvent: false,
@@ -170,11 +196,41 @@
 					}, 1000)
 				}
 			})
+
+			ipcRenderer.on('activeDeviceId', (_, {deviceId, processId}) => {
+				console.log(deviceId, processId)
+
+				this.$set(this.activeDeviceIds, processId, deviceId)
+			})
+
+			ipcRenderer.on('offlineDeviceId', (_, {deviceId, processId}) => {
+
+				this.$delete(this.activeDeviceIds, processId)
+
+			})
+			ipcRenderer.on('offlineDevice', (_, deviceId) => {
+				for (let key in this.activeDeviceIds) {
+					if (this.activeDeviceIds[key] == deviceId) {
+						this.$delete(this.activeDeviceIds, key)
+					}
+				}
+
+			})
 		},
 		components: {
 			EditableCell
 		},
 		methods: {
+			openFileDialog() {
+				document.getElementById('open').click()
+			},
+			showFilePath() {
+				this.appLocation = document.getElementById('open').files[0].path
+				document.getElementById('open').value = ''
+			},
+			installApp() {
+				ipcRenderer.send('installApp', {appLocation: this.appLocation, devices: this.activeDeviceIds})
+			},
 			open() {
 				this.$notify.info(this.$t('management.open.loading'), 2000)
 				const config = this.$store.get('config')

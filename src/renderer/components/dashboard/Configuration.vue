@@ -81,11 +81,11 @@
 			</el-form-item>
 
 			<el-form-item :label="$t('configuration.other.label')">
-				<el-checkbox v-model="config.fixed" border size="medium">{{ $t('configuration.other.fixed') }}</el-checkbox>
-				<el-checkbox v-model="config.control" border size="medium">{{ $t('configuration.other.control') }}</el-checkbox>
-				<el-checkbox v-model="config.touch" border size="medium">{{ $t('configuration.other.touch') }}</el-checkbox>
-				<el-checkbox v-model="config.render" border size="medium">{{ $t('configuration.other.render') }}</el-checkbox>
-				<el-checkbox v-model="config.screen" border size="medium">{{ $t('configuration.other.screen') }}</el-checkbox>
+				<el-checkbox v-model="config.fixed"  size="medium">{{ $t('configuration.other.fixed') }}</el-checkbox>
+				<el-checkbox v-model="config.control"  size="medium">{{ $t('configuration.other.control') }}</el-checkbox>
+				<el-checkbox v-model="config.touch"  size="medium">{{ $t('configuration.other.touch') }}</el-checkbox>
+				<el-checkbox v-model="config.render"  size="medium">{{ $t('configuration.other.render') }}</el-checkbox>
+				<el-checkbox v-model="config.screen"  size="medium">{{ $t('configuration.other.screen') }}</el-checkbox>
 			</el-form-item>
 			<el-divider content-position="right">
 				<el-button type="text" @click="changeLocale">中/English</el-button>
