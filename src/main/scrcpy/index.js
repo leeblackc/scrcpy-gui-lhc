@@ -9,10 +9,17 @@ const open = ({ sender }, options) => {
 	const { x, y, height, width } = crop
 
 	sender.send('open', colNum+"--"+windowWidth+"---"+windowHeight)
-	if (title !== '') {
-		args.push('--window-title')
-		args.push(title)
-	}
+
+	const screenWidth = windowWidth / colNum
+	const screenHeight = (windowHeight - 100) / 2
+	var colUse = 0
+	var rowUse = 0
+	sender.send('open', colUse+"--"+rowUse+"--"+screenWidth+"---"+screenHeight)
+
+	// if (title !== '') {
+	// 	args.push('--window-title')
+	// 	args.push(title)
+	// }
 
 	if (open) {
 		if (!openMirror) {
@@ -49,7 +56,9 @@ const open = ({ sender }, options) => {
 		args.push(`${height}:${width}:${x}:${y}`)
 	}
 
-	devices.forEach(({ id }) => {
+	devices.forEach(({ id, name}) => {
+		args.push('--window-title')
+		args.push(name)
 		const { spawn } = require('child_process')
 		const scrcpy = spawn('scrcpy', [...args, '-s', `${id}`])
 		let opened = false
