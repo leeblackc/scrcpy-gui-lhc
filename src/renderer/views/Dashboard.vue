@@ -16,7 +16,7 @@ export default {
 	name: 'Dashboard',
 	data() {
 		return {
-			activeName: '2'
+			activeName: '1'
 		}
 	},
 	components: {

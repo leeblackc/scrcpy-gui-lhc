@@ -9,7 +9,7 @@ export default {
 	name: 'LayoutHeader',
 	data() {
 		return {
-			title: 'Scrcpy',
+			title: 'Scrcpy Gui',
 		}
 	}
 }

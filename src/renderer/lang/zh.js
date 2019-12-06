@@ -4,8 +4,8 @@ export default {
 		author: '作者'
 	},
 	dashboard: {
-		configuration: '镜像配置',
-		management: '镜像管理'
+		configuration: 'Scrcpy参数配置',
+		management: '设备管理'
 	},
 	configuration: {
 		title: {

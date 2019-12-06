@@ -4,15 +4,15 @@ const { Menu, MenuItem } = remote
 
 export default (vue) => (tray, ...items) => {
 	const menu = new Menu()
-	menu.append(new MenuItem({
-		label: vue.$t('titleBar.document'),
-		click: () => remote.shell.openExternal('https://github.com/Tomotoes/scrcpy-gui')
-	}))
+	// menu.append(new MenuItem({
+	// 	label: vue.$t('titleBar.document'),
+	// 	click: () => remote.shell.openExternal('https://github.com/Tomotoes/scrcpy-gui')
+	// }))
 
-	menu.append(new MenuItem({
-		label: vue.$t('titleBar.checkForUpdates'),
-		click: () => remote.shell.openExternal('https://github.com/Tomotoes/scrcpy-gui/releases')
-	}))
+	// menu.append(new MenuItem({
+	// 	label: vue.$t('titleBar.checkForUpdates'),
+	// 	click: () => remote.shell.openExternal('https://github.com/Tomotoes/scrcpy-gui/releases')
+	// }))
 
 	menu.append(new MenuItem({
 		label: vue.$t('titleBar.feedback'),
@@ -48,6 +48,7 @@ export default (vue) => (tray, ...items) => {
 		label: vue.$t('titleBar.switchLanguage'),
 		submenu
 	}))
+
 	const about = []
 	about.push(`name: ${pkg.name}`)
 	about.push(`version: ${pkg.version}`)

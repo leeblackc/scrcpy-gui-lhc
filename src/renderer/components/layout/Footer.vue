@@ -7,11 +7,7 @@
 				class="footer-link"
 				>Electron</a
 			>
-			&nbsp;❤ &nbsp; {{$t('footer.author')}} -
-			<a @click="$openExternal('https://tomotoes.com')" class="footer-link"
-				>Simon Ma</a
-			></span
-		>
+		</span>
 	</el-footer>
 </template>
 
