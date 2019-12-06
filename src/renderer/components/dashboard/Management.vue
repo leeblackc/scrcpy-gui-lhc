@@ -18,8 +18,7 @@
 					</el-button>
 				</template>
 			</el-autocomplete>
-			<br/>
-			<br/>
+
 			<el-button type="success" @click.native.prevent="connect" :disabled="ip === ''" plain v-waves>{{
 				$t('management.ip.connect')
 				}}

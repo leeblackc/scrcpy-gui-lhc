@@ -8,13 +8,11 @@ const open = ({ sender }, options) => {
 	const { open, openMirror, filepath } = record
 	const { x, y, height, width } = crop
 
-	sender.send('open', colNum+"--"+windowWidth+"---"+windowHeight)
 
 	const screenWidth = windowWidth / colNum
 	const screenHeight = (windowHeight - 100) / 2
 	var colUse = 0
 	var rowUse = 0
-	sender.send('open', colUse+"--"+rowUse+"--"+screenWidth+"---"+screenHeight)
 
 	// if (title !== '') {
 	// 	args.push('--window-title')
@@ -55,10 +53,6 @@ const open = ({ sender }, options) => {
 		args.push('--crop')
 		args.push(`${height}:${width}:${x}:${y}`)
 	}
-	// args.push('--window-x')
-	// args.push('50')
-	// args.push('--window-y')
-	// args.push('50')
 
 	args.push('--window-width')
 	args.push(`${screenWidth}`)
@@ -112,7 +106,7 @@ const open = ({ sender }, options) => {
 		scrcpy.on('exit', (code) => {
 			console.log(`child process exited with code ${code}`)
 			if (!exited) {
-				sender.send('close', { success: code === 0, id })
+				sender.send('msg', { success: true, msg:id+'  已关闭，信号码：'+code })
 				sender.send('offlineDeviceId', {'deviceId': id, 'processId': scrcpy.pid})
 				scrcpy.kill()
 				exited = true
