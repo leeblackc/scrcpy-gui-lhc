@@ -4,7 +4,7 @@ fixPath()
 const open = ({ sender }, options) => {
 	const args = []
 	const { config, devices } = options
-	const { title, record, screen, fixed, control, touch, render, windowWidth,windowHeight,colNum, bitRate, maxSize, crop } = config
+	const { record, screen, fixed, control, touch, render, windowWidth,windowHeight,colNum, bitRate, maxSize, crop } = config
 	const { open, openMirror, filepath } = record
 	const { x, y, height, width } = crop
 

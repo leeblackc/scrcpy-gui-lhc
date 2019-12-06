@@ -1,14 +1,7 @@
 <template>
 	<el-card>
 		<el-form ref="form" :model="config" label-width="110px">
-			<el-form-item :label="$t('configuration.title.label')">
-				<el-input
-					v-model="config.title"
-					:placeholder="$t('configuration.title.placeholder')"
-					prefix-icon="el-icon-phone"
-					clearable
-				></el-input>
-			</el-form-item>
+
 
 			<el-form-item :label="$t('configuration.record.label')">
 				<el-switch
@@ -108,7 +101,7 @@ export default {
 	data() {
 		return {
 			config: {
-				title: '',
+
 
 				record: {
 					open: false,
@@ -154,8 +147,6 @@ export default {
 		},
 		setDefault() {
 			this.config = {
-				title: '',
-
 				record: {
 					open: false,
 					openMirror: true,
