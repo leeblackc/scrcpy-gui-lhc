@@ -23,6 +23,10 @@ export default {
 			label: '镜像传输比特率',
 			popover: '8为默认比特率,不建议修改'
 		},
+		colNum: {
+			label: '行展示个数',
+			popover: '6为默认个数,不建议修改'
+		},
 		maxSize: {
 			label: '等比最大分辨率',
 			popover: '0为默认分辨率,不建议修改'

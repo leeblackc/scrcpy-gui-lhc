@@ -23,6 +23,10 @@ export default {
 			label: 'bit rate',
 			popover: '8 is the default bit rate'
 		},
+		colNum: {
+			label: 'phone col display num',
+			popover: '6 is the default num'
+		},
 		maxSize: {
 			label: 'max size',
 			popover: '0 is the default value'
