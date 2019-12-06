@@ -83,8 +83,12 @@ const installApp=({ sender }, options) => {
 	const { appLocation, devices } = options
 	for (let item in devices) {
 		// 安装apk
-		sender.send('open',devices[item])
-		client.install(devices[item], appLocation)
+
+		client.install(devices[item], appLocation).then(function() {
+			sender.send('msg',{success:true,msg:devices[item]+'  app安装成功'})
+		}).catch(function(err) {
+			sender.send('msg',{success:false,msg:devices[item]+'  app安装失败'})
+		})
 		// 推送文件 并进行安装
 
 		// client.push(item, appLocation,'/sdcard/app-release.apk').then(function(transfer){

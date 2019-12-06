@@ -18,11 +18,12 @@
 					</el-button>
 				</template>
 			</el-autocomplete>
-			<br />
-			<br />
+			<br/>
+			<br/>
 			<el-button type="success" @click.native.prevent="connect" :disabled="ip === ''" plain v-waves>{{
 				$t('management.ip.connect')
-			}}</el-button>
+				}}
+			</el-button>
 		</div>
 
 		<el-divider><i class="el-icon-mobile-phone"></i></el-divider>
@@ -37,9 +38,12 @@
 			>
 				<el-table-column type="selection" width="40"></el-table-column>
 				<el-table-column label="ID" prop="id"
-					><template slot-scope="scope">
-						<el-tag size="medium" type="warning">{{ scope.row.id }}</el-tag></template
-					></el-table-column
+				>
+					<template slot-scope="scope">
+						<el-tag size="medium" type="warning">{{ scope.row.id }}</el-tag>
+					</template
+					>
+				</el-table-column
 				>
 				<el-table-column :label="$t('management.devices.name')">
 					<editable-cell
@@ -64,7 +68,8 @@
 					<template slot-scope="scope">
 						<el-tag :type="scope.row.method ===  $t('management.devices.method.wired') ? 'primary' : 'success'">{{
 							scope.row.method
-						}}</el-tag>
+							}}
+						</el-tag>
 					</template>
 				</el-table-column>
 
@@ -119,7 +124,8 @@
 <script>
 	import EditableCell from '../components/EditableCell'
 	import Regular from '@/utils/regular'
-	import { ipcRenderer } from 'electron'
+	import {ipcRenderer} from 'electron'
+
 	const childProcess = require('child_process');
 	const exec = childProcess.exec
 	export default {
@@ -144,26 +150,26 @@
 		created() {
 			this.wireless = this.$t('management.devices.method.wireless')
 			this.wired = this.$t('management.devices.method.wired')
-			const { wireless, wired } = this
+			const {wireless, wired} = this
 
 			this.wirelessDevices = this.$store.get('wirelessDevices') || []
 			ipcRenderer.on('devices', (event, devices) => {
 				const preDevicesCount = this.currentDevices.length
 				this.currentDevices = devices
-					.filter(({ id }, idx) => devices.findIndex((device) => id === device.id) === idx)
-					.map(({ id }) => ({ id, name: this.$store.get(id) || id, method: Regular('ip', id) ? wireless : wired }))
+					.filter(({id}, idx) => devices.findIndex((device) => id === device.id) === idx)
+					.map(({id}) => ({id, name: this.$store.get(id) || id, method: Regular('ip', id) ? wireless : wired}))
 
 				const preWirelessDevicesCount = this.wirelessDevices.length
-				this.currentDevices.forEach(({ id, name, method }) => {
+				this.currentDevices.forEach(({id, name, method}) => {
 					if (method === wired) {
 						return
 					}
 					if (this.wirelessDevices.every((device) => id !== device.id)) {
-						this.wirelessDevices.push({ id, name })
+						this.wirelessDevices.push({id, name})
 					}
 				})
 				preWirelessDevicesCount !== this.wirelessDevices.length &&
-					this.$store.put('wirelessDevices', this.wirelessDevices)
+				this.$store.put('wirelessDevices', this.wirelessDevices)
 				if (this.firstLoad) {
 					this.firstLoad = false
 					this.$notify.success(this.$t('management.notify.firstLoad'), 800)
@@ -178,20 +184,24 @@
 				if (!opened[id]) {
 					opened[id] = true
 					setTimeout(() => {
-						this.$notify.success(this.$t('management.notify.open', { name: this.$store.get(id) || id }))
+						this.$notify.success(this.$t('management.notify.open', {name: this.$store.get(id) || id}))
 					}, 500)
 					setTimeout(() => {
 						opened[id] = false
 					}, 1000)
 				}
 			})
+			ipcRenderer.on('msg', (_, {success, msg}) => {
+				const result = success ? 'success' : 'error'
+				this.$notify[result](msg,2000)
+			})
 
 			const closed = {}
-			ipcRenderer.on('close', (_, { success, id }) => {
+			ipcRenderer.on('close', (_, {success, id}) => {
 				if (!closed[id]) {
 					closed[id] = true
 					const result = success ? 'success' : 'error'
-					this.$notify[result](this.$t('management.open.' + result, { name: this.$store.get(id) || id }))
+					this.$notify[result](this.$t('management.open.' + result, {name: this.$store.get(id) || id}))
 
 					setTimeout(() => {
 						closed[id] = false
@@ -256,7 +266,7 @@
 				// }
 				// this.activeDeviceIds = {}
 
-				this.viewProcessMessage('scrcpy.exe',function (msg) {
+				this.viewProcessMessage('scrcpy.exe', function (msg) {
 					//关闭匹配的进程
 					process.kill(msg)
 				})
@@ -272,21 +282,21 @@
 					this.$notify.error(this.$t('management.connect.error.ip'))
 					return
 				}
-				const device = this.currentDevices.find(({ id }) => id === this.ip || id.split(':')[0] === this.ip)
+				const device = this.currentDevices.find(({id}) => id === this.ip || id.split(':')[0] === this.ip)
 				if (device) {
-					this.$notify.warning(this.$t('management.connect.error.exist', { name: device.name }))
+					this.$notify.warning(this.$t('management.connect.error.exist', {name: device.name}))
 					return
 				}
 
-				const wireDevice = this.currentDevices.filter(({ method }) => method === this.wired)[0]
+				const wireDevice = this.currentDevices.filter(({method}) => method === this.wired)[0]
 
 				const openedIP = this.ip
-				ipcRenderer.send('connect', { id: wireDevice ? wireDevice.id : null, ip: this.ip })
+				ipcRenderer.send('connect', {id: wireDevice ? wireDevice.id : null, ip: this.ip})
 
 				this.stoppedNotify = true
 				this.$notify.info(this.$t('management.connect.loading'))
 				setTimeout(() => {
-					if (this.currentDevices.every(({ id }) => id !== openedIP && id.split(':')[0] !== openedIP)) {
+					if (this.currentDevices.every(({id}) => id !== openedIP && id.split(':')[0] !== openedIP)) {
 						this.$notify.error(this.$t('management.connect.fail'))
 					} else {
 						this.$notify.success(this.$t('management.connect.success'))
@@ -307,7 +317,7 @@
 			filterTag(value, row) {
 				return row.method === value
 			},
-			rename({ id, method }, newName) {
+			rename({id, method}, newName) {
 				this.$store.put(id, newName)
 				if (method === this.wireless) {
 					const device = this.wirelessDevices.find((device) => device.id === id)
@@ -318,7 +328,7 @@
 			disconnect(index, id) {
 				this.currentDevices.splice(index, 1)
 				ipcRenderer.send('disconnect', id)
-				this.$notify.info(this.$t('management.disconnect.success', { name: this.$store.get(id) || id }))
+				this.$notify.info(this.$t('management.disconnect.success', {name: this.$store.get(id) || id}))
 			},
 			selectionChange(val) {
 				this.selectedDevices = val
@@ -341,28 +351,35 @@
 	.el-card__body {
 		padding: 12px !important;
 	}
+
 	.wrap-button {
 		text-align: center;
 		margin: 20px auto;
 	}
+
 	.wrap-form {
 		text-align: center;
 		margin-bottom: 20px;
 	}
+
 	.display {
 		display: none;
 	}
+
 	.item-id {
 		font-size: 14px;
 		color: #666;
 	}
+
 	.item-id::before {
 		content: 'ID: ';
 		color: #999;
 	}
+
 	.item-remove {
 		padding: 0 10px;
 	}
+
 	.when-empty {
 		margin: 10px auto;
 		text-align: center;
