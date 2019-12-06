@@ -55,10 +55,38 @@ const open = ({ sender }, options) => {
 		args.push('--crop')
 		args.push(`${height}:${width}:${x}:${y}`)
 	}
+	// args.push('--window-x')
+	// args.push('50')
+	// args.push('--window-y')
+	// args.push('50')
+
+	args.push('--window-width')
+	args.push(`${screenWidth}`)
+	args.push('--window-height')
+	args.push(`${screenHeight}`)
 
 	devices.forEach(({ id, name}) => {
 		args.push('--window-title')
 		args.push(name)
+
+		if (colNum > colUse) {
+			args.push('--window-x')
+			args.push(parseInt(screenWidth * colUse))
+			args.push('--window-y')
+			args.push(parseInt(screenHeight * rowUse) + 30)
+			colUse++
+		} else {
+			colUse = 0
+			rowUse++
+			if (rowUse >= 2) {
+				rowUse = 0
+			}
+			args.push('--window-x')
+			args.push(parseInt(screenWidth * colUse))
+			args.push('--window-y')
+			args.push(parseInt(screenHeight * rowUse) + 30)
+		}
+
 		const { spawn } = require('child_process')
 		const scrcpy = spawn('scrcpy', [...args, '-s', `${id}`])
 		let opened = false
