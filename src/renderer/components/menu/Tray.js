@@ -4,20 +4,22 @@ const window = getCurrentWindow()
 const tray = new Tray(`${__static}/icons/16x16.png`)
 
 export default Menu => {
-	const menu = Menu(tray,{ label: 'tray.hide', click() { window.hide() } }, {
-		label: 'tray.exit', click() {
-			window.close()
-		}
-	})
+	const menu = Menu(tray,
+			{ label: 'tray.show', click() { window.show() } },
+			{ label: 'tray.hide', click() { window.hide() } },
+			{ label: 'tray.exit', click() { window.destroy() } }
+		)
 
 	tray.setContextMenu(menu)
-	tray.setTitle('Scrcpy')
-	tray.setToolTip('Scrcpy')
+	tray.setTitle('ScrcpyGui')
+	tray.setToolTip('ScrcpyGui')
 	tray.on('right-click', () => {
 		tray.popUpContextMenu(menu)
 	})
 	tray.on('click', () => {
-		window.show()
+		window.isVisible() ? window.hide() : window.show()
+		window.isVisible() ? window.setSkipTaskbar(false) : window.setSkipTaskbar(true);
+		// window.show()
 	})
 	return tray
 }

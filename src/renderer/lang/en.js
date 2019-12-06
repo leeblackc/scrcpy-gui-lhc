@@ -113,6 +113,7 @@ export default {
 		about: 'About'
 	},
 	tray: {
+		show: 'Show',
 		hide: 'Hide',
 		exit: 'Exit'
 	}

@@ -39,9 +39,11 @@ function createWindow() {
 	mainWindow.setMenu(null)
 
 	mainWindow.loadURL(winURL)
+
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show()
 	})
+
 	mainWindow.on('close', () => {
 		ipcMain.removeAllListeners('open')
 		ipcMain.removeAllListeners('connect')
@@ -49,8 +51,17 @@ function createWindow() {
 		ipcMain.removeAllListeners('installApp')
 	})
 
+
 	mainWindow.on('closed', () => {
 		mainWindow = null
+
+	})
+
+	mainWindow.on('close', (event) => {
+		mainWindow.hide();
+		mainWindow.setSkipTaskbar(true);
+		event.preventDefault();
+
 	})
 
 	mainWindow.webContents.on('did-finish-load', function () {

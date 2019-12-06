@@ -113,6 +113,7 @@ export default {
 		about: '关于'
 	},
 	tray: {
+		show: '显示',
 		hide: '隐藏',
 		exit: '退出'
 	}
