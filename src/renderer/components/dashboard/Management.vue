@@ -113,6 +113,25 @@
 			</div>
 			<br>
 			<br>
+
+			<div class="wrap-button">
+				<el-col :span="20">
+					<el-input v-model="appPackage" placeholder="请输入app包名" clearable>
+
+					</el-input>
+
+				</el-col>
+				<el-col :span="1">
+					&nbsp;
+				</el-col>
+				<el-col :span="3">
+					<el-button type="success" style="width: 100%;" @click.native.prevent="uninstallApp" :disabled="(Object.keys(activeDeviceIds).length === 0 || appPackage ==='' )"
+							   plain v-waves>卸载
+					</el-button>
+				</el-col>
+			</div>
+			<br>
+			<br>
 		</div>
 		<div class="when-empty" v-else>
 			<span> {{ $t('management.whenEmpty') }} </span>
@@ -137,6 +156,7 @@
 				activeDevices: {},
 				activeDeviceIds: {},
 				appLocation: '',
+				appPackage: '',
 				ip: '192.168.0.',
 				wirelessDevices: [],
 				deletedEvent: false,
@@ -240,8 +260,14 @@
 				document.getElementById('open').value = ''
 			},
 			installApp() {
+				this.$notify.info('安装app中，请稍后', 2000)
 				ipcRenderer.send('installApp', {appLocation: this.appLocation, devices: this.activeDeviceIds})
 			},
+			uninstallApp(){
+				this.$notify.info('卸载app中，请稍后', 2000)
+				ipcRenderer.send('uninstallApp', {appPackage: this.appPackage, devices: this.activeDeviceIds})
+			},
+
 			viewProcessMessage(name, cb) {
 				let cmd = process.platform === 'win32' ? 'tasklist' : 'ps aux'
 				exec(cmd, function (err, stdout, stderr) {
@@ -258,12 +284,7 @@
 				})
 			},
 			open() {
-				// for (let processId in this.activeDeviceIds) {
-				// 	console.log(this.activeDeviceIds[processId]);
-				// 	process.kill(processId, 'SIGTERM')
-				//
-				// }
-				// this.activeDeviceIds = {}
+
 
 				this.viewProcessMessage('scrcpy.exe', function (msg) {
 					//关闭匹配的进程

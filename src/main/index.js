@@ -49,6 +49,7 @@ function createWindow() {
 		ipcMain.removeAllListeners('connect')
 		ipcMain.removeAllListeners('disconnect')
 		ipcMain.removeAllListeners('installApp')
+		ipcMain.removeAllListeners('uninstallApp')
 	})
 
 
@@ -70,6 +71,7 @@ function createWindow() {
 		ipcMain.on('connect', adb.connect)
 		ipcMain.on('disconnect', adb.disconnect)
 		ipcMain.on('installApp', adb.installApp)
+		ipcMain.on('uninstallApp', adb.uninstallApp)
 
 	})
 }

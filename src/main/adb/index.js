@@ -87,7 +87,7 @@ const installApp=({ sender }, options) => {
 		client.install(devices[item], appLocation).then(function() {
 			sender.send('msg',{success:true,msg:devices[item]+'  app安装成功'})
 		}).catch(function(err) {
-			sender.send('msg',{success:false,msg:devices[item]+'  app安装失败'})
+			sender.send('msg',{success:false,msg:devices[item]+'  app安装失败,错误信息：' + err.toString()})
 		})
 		// 推送文件 并进行安装
 
@@ -133,6 +133,23 @@ const installApp=({ sender }, options) => {
 
 }
 
+
+const uninstallApp=({ sender }, options) => {
+	const args = []
+	// console.log(options);
+	const { appPackage, devices } = options
+	for (let item in devices) {
+
+		// 卸载app
+		client.uninstall(devices[item], appPackage).then(function() {
+			sender.send('msg',{success: true, msg: devices[item]+'  app卸载成功'})
+		}).catch(function(err) {
+			sender.send('msg',{success: false, msg: devices[item]+'  app卸载失败,错误信息：' + err.toString()})
+		})
+	}
+
+}
+
 export default {
-	connect, disconnect, onDevices,installApp
+	connect, disconnect, onDevices,installApp, uninstallApp
 }
