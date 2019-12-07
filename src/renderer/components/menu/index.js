@@ -9,7 +9,7 @@ export default vue => {
 	new Titlebar({
 		backgroundColor: Color.fromHex('#868686'),
 		shadow: true,
-		icon: 'https://cdn.jsdelivr.net/gh/Tomotoes/images/blog/favicon.ico',
+		icon: `build/icons/icon.ico`,
 		maximizable: false,
 		hideWhenClickingClose: true,
 		menu: Menu(tray)
